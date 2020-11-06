@@ -40,29 +40,27 @@
     </style>
 
     <script src="<@spring.url '/js/message-inspector.js'/>"></script>
-    
+
     <script type="text/javascript">
-	$( document ).ready(updateProtobufPanel);
-	function updateProtobufPanel()   
-	{   	   
-	   if ($("#format").val() != "PROTOBUF")
-	    {
-	        $('#protobufDescriptor').hide();
-	        $('#protobufMsgType').hide();
-	    }
-	    else
-	    {
-	        $('#protobufDescriptor').show();
-	        $('#protobufMsgType').show();
-	        $('#descFile').prop('required',true);
-	    }
-	}  
-	$(document).ready(function(){
-	    $("#format").change(function() {
-	    	updateProtobufPanel();
-	    });
-	});
-	</script>
+        $(document).ready(updateProtobufPanel);
+
+        function updateProtobufPanel() {
+            if ($("#format").val() != "PROTOBUF") {
+                $('#protobufDescriptor').hide();
+                $('#protobufMsgType').hide();
+            } else {
+                $('#protobufDescriptor').show();
+                $('#protobufMsgType').show();
+                $('#descFile').prop('required', true);
+            }
+        }
+
+        $(document).ready(function () {
+            $("#format").change(function () {
+                updateProtobufPanel();
+            });
+        });
+    </script>
 </@template.header>
 <#setting number_format="0">
 
@@ -82,7 +80,8 @@
 </div>
 
 <div id="messageFormPanel" class="card">
-    <form method="GET" action="<@spring.url '/topic/${topic.name}/messages'/>" id="messageForm" class="form-inline card-body">
+    <form method="GET" action="<@spring.url '/topic/${topic.name}/messages'/>" id="messageForm"
+          class="form-inline card-body">
         <div class="form-group">
             <label for="partition">Partition</label>
             <select class="form-control" id="partition" name="partition">
@@ -130,26 +129,35 @@
         </div>
         &nbsp;&nbsp;
         <div class="form-group" id="protobufDescriptor">
-        <#if descFiles?size != 0>
-          <label for="format">Protobuf descriptor</label>
-	        <select class="form-control" id="descFile" name="descFile">
-	          <#list descFiles as f>
-	           <option value="${f}">${f}</option>
-	          </#list>
-	        </select>
-        <#else>
-          <span class="errorMessage">No available descriptor, please check.</span>
-        </#if>
+            <#if descFiles?size != 0>
+                <label for="format">Protobuf descriptor</label>
+                <select class="form-control" id="descFile" name="descFile">
+                    <#list descFiles as f>
+                        <option value="${f}">${f}</option>
+                    </#list>
+                </select>
+            <#else>
+                <span class="errorMessage">No available descriptor, please check.</span>
+            </#if>
         </div>
         &nbsp;&nbsp;
         <div class="form-group" id="protobufMsgType">
             <#if descFiles?size != 0>
-              <label class=control-label" for="format">Protobuf message type name</label>
-              <@spring.formInput path="messageForm.msgTypeName" attributes='class="form-control"'/>
+                <#if messageTypes?size != 0>
+                    <label for="format">Protobuf message type name</label>
+                    <select class="form-control" id="messageTypes" name="messageTypes">
+                        <#list messageTypes as m>
+                            <option value="${m}">${m}</option>
+                        </#list>
+                    </select>
+                <#else>
+                    <@spring.formInput path="messageForm.msgTypeName" attributes='class="form-control"'/>
+                </#if>
             </#if>
         </div>
         &nbsp;&nbsp;
-        <button id="viewMessagesBtn" class="btn btn-success" type="submit" ><i class="fa fa-search"></i> View Messages</button>
+        <button id="viewMessagesBtn" class="btn btn-success" type="submit"><i class="fa fa-search"></i> View Messages
+        </button>
     </form>
 </div>
 
